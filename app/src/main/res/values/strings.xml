@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">WorldVisit</string>
+    <string name="main_activity_add_country_button">Ajouter un pays</string>
+    <string name="add_country_activity_search_view_hint">Saisir un pays ...</string>
+    <string name="visit_date_picker_activity_valid_button">Valider</string>
 </resources>

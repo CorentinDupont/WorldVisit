@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="global_padding">8dp</dimen>
+    <dimen name="item_list_padding">6dp</dimen>
+    <dimen name="item_country_name">18sp</dimen>
+    <dimen name="item_visit_date">12sp</dimen>
+</resources>
