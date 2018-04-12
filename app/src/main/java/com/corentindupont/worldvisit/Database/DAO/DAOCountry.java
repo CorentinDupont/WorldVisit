@@ -66,6 +66,41 @@ public class DAOCountry extends DAOBase {
         return country;
     }
 
+    public Country selectCountryByName(String countryName){
+        open();
+        Country country = new Country();
+
+        String[] projection = {BaseContract.CountryContract._ID,
+                BaseContract.CountryContract.COLUMN_NAME,
+                BaseContract.CountryContract.COLUMN_CAPITAL,
+                BaseContract.CountryContract.COLUMN_CONTINENT,
+                BaseContract.CountryContract.COLUMN_FLAG_SVG_URL};
+
+        String selection = BaseContract.CountryContract.COLUMN_NAME + " = ? ";
+        String[] selectionArgs = {String.valueOf(countryName)};
+        String tri = BaseContract.CountryContract._ID+ " DESC ";
+
+        Cursor c = mDb.query(
+                BaseContract.CountryContract.TABLE_COUNTRY, // table sur laquelle faire la requète
+                projection, // colonnes à retourner
+                selection, // colonnes pour la clause WHERE
+                selectionArgs, // valeurs pour la clause WHERE
+                null, // GROUP BY (inactif)
+                null, // HAVING (inactif)
+                tri, // ordre de tri
+                null); // LIMIT (inactif)
+        if(c.moveToFirst()){
+            country.setId(c.getInt(0));
+            country.setName(c.getString(1));
+            country.setCapital(c.getString(2));
+            country.setContinent(c.getString(3));
+            country.setAlpha2CodeUrl(c.getString(4));
+            c.close();
+        }
+        close();
+        return country;
+    }
+
     public void updateCountry(int countryIdToUpdate, Country country){
         open();
         ContentValues contentValues = new ContentValues();
