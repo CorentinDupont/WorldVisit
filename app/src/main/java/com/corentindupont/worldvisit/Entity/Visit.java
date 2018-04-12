@@ -7,6 +7,7 @@ import java.util.Date;
  */
 
 public class Visit {
+    private int id;
     private Country country;
     private Date date;
     private static final String dateFormat = "dd MMM. yyyy";
@@ -18,6 +19,14 @@ public class Visit {
     public Visit(Country country, Date date) {
         this.country = country;
         this.date = date;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Country getCountry() {

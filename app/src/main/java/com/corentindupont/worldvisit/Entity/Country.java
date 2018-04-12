@@ -1,25 +1,34 @@
 package com.corentindupont.worldvisit.Entity;
 
-import java.util.Date;
-
 /**
  * Created by Corentin on 10/04/2018.
  */
 
 public class Country {
+    private int id;
     private String name;
     private String capital;
     private String continent;
-    private String flagSvgUrl;
+    private String alpha2CodeUrl;
+
+    private final static String baseFlagUrl = "http://www.geognos.com/api/en/countries/flag/";
 
     public Country() {
     }
 
-    public Country(String name, String capital, String continent, String flagSvgUrl) {
+    public Country(String name, String capital, String continent, String alpha2CodeUrl) {
         this.name = name;
         this.capital = capital;
         this.continent = continent;
-        this.flagSvgUrl = flagSvgUrl;
+        this.alpha2CodeUrl = alpha2CodeUrl;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -46,11 +55,20 @@ public class Country {
         this.continent = continent;
     }
 
-    public String getFlagSvgUrl() {
-        return flagSvgUrl;
+    public String getAlpha2CodeUrl() {
+        return alpha2CodeUrl;
     }
 
-    public void setFlagSvgUrl(String flagSvgUrl) {
-        this.flagSvgUrl = flagSvgUrl;
+    public void setAlpha2CodeUrl(String alpha2CodeUrl) {
+        this.alpha2CodeUrl = alpha2CodeUrl;
+    }
+
+    //change url flag with only alpha2code param.
+    public void setAlpha2CodeUrlByAlpha2Code(String alpha2Code){
+        this.alpha2CodeUrl = alpha2CodeUrl + alpha2Code + ".png";
+    }
+
+    public static String getBaseFlagUrl() {
+        return baseFlagUrl;
     }
 }

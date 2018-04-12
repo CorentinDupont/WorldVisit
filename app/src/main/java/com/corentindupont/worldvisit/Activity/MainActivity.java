@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.corentindupont.worldvisit.Adapter.VisitAdapter;
+import com.corentindupont.worldvisit.Database.DAO.DAOCountry;
+import com.corentindupont.worldvisit.Database.DAO.DAOVisit;
 import com.corentindupont.worldvisit.Entity.Country;
 import com.corentindupont.worldvisit.Entity.Visit;
 import com.corentindupont.worldvisit.R;
@@ -18,11 +21,17 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
+    DAOCountry daoCountry;
+    DAOVisit daoVisit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //initialize DAOs
+        daoCountry = new DAOCountry(MainActivity.this);
+        daoVisit = new DAOVisit(MainActivity.this);
 
         //get the recycler view from the layout
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -34,12 +43,16 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         //Create example content
-        List<Visit> visitListEx = new ArrayList<>();
         for(int i=0; i<10; i++){
-            Country country = new Country("Paraguay", "Capitaine", "Europa Park", "https://restcountries.eu/data/pry.svg");
-            Visit visit = new Visit(country, new Date());
-            visitListEx.add(visit);
+            Country country = new Country("Paraguay", "Capitaine", "Europa Park", Country.getBaseFlagUrl()+"FR.png");
+            Log.i("COUNTRY", "flag url : "+country.getAlpha2CodeUrl());
+            daoCountry.insertCountry(country);
+            Visit visit = new Visit(daoCountry.selectCountry(1), new Date());
+            Log.i("COUNTRY", String.valueOf(daoCountry.selectCountry(1).getId()));
+            daoVisit.insertVisit(visit);
         }
+
+        List<Visit> visitListEx = daoVisit.selectAllVisits();
 
         //Add adapter
         VisitAdapter adapter = new VisitAdapter(visitListEx, this);
