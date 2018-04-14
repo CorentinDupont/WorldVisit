@@ -2,6 +2,8 @@ package com.corentindupont.worldvisit.Activity;
 
 import android.content.Intent;
 import android.support.annotation.MainThread;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.corentindupont.worldvisit.Adapter.VisitAdapter;
+import com.corentindupont.worldvisit.Constant;
 import com.corentindupont.worldvisit.Database.DAO.DAOCountry;
 import com.corentindupont.worldvisit.Database.DAO.DAOVisit;
 import com.corentindupont.worldvisit.Entity.Country;
@@ -73,6 +76,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch(view.getId()){
             case R.id.add_country_button:
+                //Strange loading, dialog creation to indicate the activity loading
+                /*FragmentManager manager = getSupportFragmentManager();
+                FragmentTransaction ft = manager.beginTransaction();
+                WaitingLoadCountryActivityDialog waitingLoadCountryActivityDialog = new WaitingLoadCountryActivityDialog();
+                waitingLoadCountryActivityDialog.show(ft, Constant.LOAD_COUNTRY_ACTIVITY_DIALOG_TAG);*/
+                //Launch all countries activity
                 Intent intent = new Intent(MainActivity.this, AddCountryActivity.class);
                 startActivity(intent);
         }

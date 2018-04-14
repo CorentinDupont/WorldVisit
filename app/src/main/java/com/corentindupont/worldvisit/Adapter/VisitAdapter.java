@@ -49,9 +49,12 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitViewHolder>{
         holder.getCountryNameTV().setText(visitList.get(position).getCountry().getName());
         holder.getCountryCapitalTV().setText(visitList.get(position).getCountry().getCapital());
         holder.getCountryContinentTV().setText(visitList.get(position).getCountry().getContinent());
-        Log.i("COUNTRY", visitList.get(position).getCountry().getAlpha2CodeUrl());
         //using picasso, get the image at URL, and put it into the image view
-        Picasso.with(context).load(visitList.get(position).getCountry().getAlpha2CodeUrl()).fit().centerCrop().into(holder.getCountryFlagIV());
+        Picasso.with(context).load(visitList.get(position).getCountry().getAlpha2CodeUrl())
+                .placeholder(R.drawable.ic_loading)
+                .error(R.drawable.ic_break)
+                .fit().centerCrop()
+                .into(holder.getCountryFlagIV());
         //transform visit date in String with a "useful" method.
         holder.getVisitDateTV().setText(UsefulMethods.dateToString(visitList.get(position).getDate(),Visit.getDateFormat()));
         holder.getDeleteButtonLL().setOnClickListener(new View.OnClickListener() {

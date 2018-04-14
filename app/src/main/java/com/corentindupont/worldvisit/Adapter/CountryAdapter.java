@@ -54,7 +54,11 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryViewHolder>{
         holder.getCountryCapitalTV().setText(countryList.get(position).getCapital());
         holder.getCountryContinentTV().setText(countryList.get(position).getContinent());
         //using picasso, get the image at URL, and put it into the image view
-        Picasso.with(context).load(countryList.get(position).getAlpha2CodeUrl()).fit().centerCrop().into(holder.getCountryFlagIV());
+        Picasso.with(context).load(countryList.get(position).getAlpha2CodeUrl())
+                .placeholder(R.drawable.ic_loading)
+                .error(R.drawable.ic_break)
+                .fit().centerCrop()
+                .into(holder.getCountryFlagIV());
     }
 
     @Override

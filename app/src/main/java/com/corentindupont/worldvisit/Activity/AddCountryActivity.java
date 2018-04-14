@@ -29,6 +29,7 @@ import com.corentindupont.worldvisit.Database.DAO.DAOVisit;
 import com.corentindupont.worldvisit.Entity.Country;
 import com.corentindupont.worldvisit.Entity.Visit;
 import com.corentindupont.worldvisit.R;
+import com.corentindupont.worldvisit.WaitLoadingCountriesDialog;
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -50,6 +51,7 @@ public class AddCountryActivity extends AppCompatActivity implements RecyclerVie
     CountryAdapter countryAdapter;
     List<Country> countryList;
     GestureDetector gestureDetector = null;
+    WaitLoadingCountriesDialog waitLoadingCountriesDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,7 +169,6 @@ public class AddCountryActivity extends AppCompatActivity implements RecyclerVie
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                Log.i("COUNTRY", String.valueOf(jsonObject));
                                 Country country = new Country(
                                         jsonObject.getString("name"),
                                         jsonObject.getString("capital"),
@@ -175,15 +176,14 @@ public class AddCountryActivity extends AppCompatActivity implements RecyclerVie
                                         Country.getBaseFlagUrl() + jsonObject.getString("alpha2Code") + ".png"
                                 );
 
-                                Log.i("COUNTRY", String.valueOf(daoCountry.selectCountryByName(country.getName()).getId()));
                                 //if the country doesn't already exist in database
                                 if(daoCountry.selectCountryByName(country.getName()).getId() == 0){
                                     daoCountry.insertCountry(country);
                                     countryList.add(country);
-                                    Log.i("COUNTRY", "new country added in database !!");
 
                                 }
                                 countryAdapter.notifyDataSetChanged();
+                                waitLoadingCountriesDialog.setPercentageProgress(i*100/jsonArray.length());
 
 
                             }
@@ -198,6 +198,12 @@ public class AddCountryActivity extends AppCompatActivity implements RecyclerVie
                 Toast.makeText(AddCountryActivity.this, "Echec du chargement des pays.", Toast.LENGTH_SHORT).show();
             }
         });
+
+        //Request call beginning, show progress bar dialog.
+        /*waitLoadingCountriesDialog = new WaitLoadingCountriesDialog();
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction ft = manager.beginTransaction();
+        waitLoadingCountriesDialog.show(ft, Constant.LOAD_COUNTRY_DIALOG_TAG);*/
 
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
@@ -248,4 +254,5 @@ public class AddCountryActivity extends AppCompatActivity implements RecyclerVie
     public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
     }
+
 }
