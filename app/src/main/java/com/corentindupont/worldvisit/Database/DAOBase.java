@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 public abstract class DAOBase {
     //if there are change in the database structure, please change this value.
-    protected final static int VERSION = 5;
+    protected final static int VERSION = 9;
     // file name wich represent my database
     protected final static String NAME = "worldvisit.db";
 

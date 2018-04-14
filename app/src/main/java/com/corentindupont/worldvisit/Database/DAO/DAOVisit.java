@@ -103,4 +103,24 @@ public class DAOVisit extends DAOBase {
         close();
         return all_Visits;
     }
+
+    public ArrayList<Visit> selectAllVisitsByCountry(int countryId){
+        open();
+        ArrayList<Visit> all_Visits = new ArrayList<>();
+        String selectQuery = "SELECT * FROM "+ BaseContract.VisitContract.TABLE_VISIT +" WHERE " + BaseContract.VisitContract.COLUMN_COUNTRY_ID + " = "+countryId;
+        Cursor c = mDb.rawQuery(selectQuery, null);
+
+        for(c.moveToFirst(); !c.isAfterLast(); c.moveToNext()){
+            Visit visit = new Visit();
+            visit.setId(c.getInt(0));
+            visit.setDate(UsefulMethods.stringToDate(c.getString(1), Visit.getDateFormat()));
+            DAOCountry daoCountry = new DAOCountry(context);
+            visit.setCountry(daoCountry.selectCountry(c.getInt(2)));
+            Log.i("ENTITY-VISIT", "country " + visit.getCountry());
+            all_Visits.add(visit);
+        }
+        c.close();
+        close();
+        return all_Visits;
+    }
 }

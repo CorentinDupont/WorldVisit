@@ -16,7 +16,9 @@ import com.corentindupont.worldvisit.ViewHolder.CountryViewHolder;
 import com.corentindupont.worldvisit.ViewHolder.VisitViewHolder;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Corentin on 10/04/2018.
@@ -26,12 +28,15 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryViewHolder>{
 
     //Visit Entity List
     private List<Country> countryList = null;
+    //Copy of the visit list, used by the filter
+    private List<Country> countryListMemory = new ArrayList<>();
     //Application context, for Picasso
     private Context context;
 
     //Constructor
     public CountryAdapter(List<Country> countryList, Context context) {
         this.countryList = countryList;
+        countryListMemory.addAll(countryList);
         this.context = context;
     }
 
@@ -57,7 +62,26 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryViewHolder>{
         return countryList.size();
     }
 
-    private Country getVisitAtPosition(int position){
+    public Country getCountryAtPosition(int position){
         return countryList.get(position);
+    }
+
+    //Filter, used by the search view
+    public void filter(String charText) {
+
+        charText = charText.toLowerCase(Locale.getDefault());
+
+        countryList.clear();
+        if (charText.length() == 0) {
+            countryList.addAll(countryListMemory);
+
+        } else {
+            for (Country country : countryListMemory) {
+                if (charText.length() != 0 && country.getName().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    countryList.add(country);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 }
